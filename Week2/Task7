@@ -1,0 +1,14 @@
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
+public class Solution {
+    public static String findDay(int month, int day, int year) {
+        LocalDate date = LocalDate.of(year, month, day);
+        return date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toUpperCase();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findDay(8, 5, 2015)); // Sample test
+    }
+}
