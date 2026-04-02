@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int T = sc.nextInt();
+        sc.nextLine();
+
+        while (T-- > 0) {
+            String s = sc.nextLine();
+            int n = s.length();
+
+            String firstHalf, secondHalf;
+
+            if (n % 2 == 0) {
+                firstHalf = s.substring(0, n / 2);
+                secondHalf = s.substring(n / 2);
+            } else {
+                firstHalf = s.substring(0, n / 2);
+                secondHalf = s.substring(n / 2 + 1);
+            }
+
+            if (isLapindrome(firstHalf, secondHalf)) {
+                System.out.println("YES");
+            } else {
+                System.out.println("NO");
+            }
+        }
+
+        sc.close();
+    }
+
+    static boolean isLapindrome(String a, String b) {
+        char[] arr1 = a.toCharArray();
+        char[] arr2 = b.toCharArray();
+
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+
+        return Arrays.equals(arr1, arr2);
+    }
+}
