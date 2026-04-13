@@ -1,0 +1,74 @@
+import java.util.HashMap;
+
+class UndergroundSystem {
+
+    // Store check-in data: id -> (stationName, check-in time)
+    private HashMap<Integer, CheckInData> checkInMap;
+
+    // Store travel data: route -> (totalTime, tripCount)
+    private HashMap<String, TravelData> travelMap;
+
+    // Helper class for check-in details
+    class CheckInData {
+        String stationName;
+        int time;
+
+        CheckInData(String stationName, int time) {
+            this.stationName = stationName;
+            this.time = time;
+        }
+    }
+
+    // Helper class for travel statistics
+    class TravelData {
+        int totalTime;
+        int tripCount;
+
+        TravelData(int totalTime, int tripCount) {
+            this.totalTime = totalTime;
+            this.tripCount = tripCount;
+        }
+    }
+
+    // Constructor
+    public UndergroundSystem() {
+        checkInMap = new HashMap<>();
+        travelMap = new HashMap<>();
+    }
+
+    // Record check-in
+    public void checkIn(int id, String stationName, int t) {
+        checkInMap.put(id, new CheckInData(stationName, t));
+    }
+
+    // Record check-out
+    public void checkOut(int id, String stationName, int t) {
+        CheckInData checkInData = checkInMap.get(id);
+
+        String startStation = checkInData.stationName;
+        int startTime = checkInData.time;
+
+        int travelTime = t - startTime;
+
+        String routeKey = startStation + "->" + stationName;
+
+        TravelData travelData = travelMap.getOrDefault(routeKey, new TravelData(0, 0));
+
+        travelData.totalTime += travelTime;
+        travelData.tripCount += 1;
+
+        travelMap.put(routeKey, travelData);
+
+        // Remove passenger after checkout
+        checkInMap.remove(id);
+    }
+
+    // Return average travel time
+    public double getAverageTime(String startStation, String endStation) {
+        String routeKey = startStation + "->" + endStation;
+
+        TravelData travelData = travelMap.get(routeKey);
+
+        return (double) travelData.totalTime / travelData.tripCount;
+    }
+}
